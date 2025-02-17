@@ -69,34 +69,4 @@ export default function PreviewPage() {
         </motion.div>
     );
 
-    // return (
-    //     <div className="max-w-2xl mx-auto p-6 bg-white rounded-xl shadow-xl mt-10">
-    //         <h1 className="text-2xl font-bold text-center mb-4 text-slate-700">Vista Previa del Amparo</h1>
-
-    //         {previewFilename ? (
-    //             <iframe
-    //                 src={`http://localhost:8000/vista-previa-amparo/${previewFilename}`}
-    //                 className="w-full h-96 border"
-    //                 title="Vista previa del amparo"
-    //             ></iframe>
-    //         ) : (
-    //             <p className="text-center text-gray-500">Generando vista previa...</p>
-    //         )}
-
-    //         <button
-    //             onClick={() => router.push("/formulario-manual")}
-    //             className="mt-4 w-full bg-yellow-500 text-white py-2 rounded-md"
-    //         >
-    //             Editar Amparo
-    //         </button>
-
-    //         <a
-    //             href={`http://localhost:8000/descargar-amparo/${previewFilename}`}
-    //             download="amparo.pdf"
-    //             className="mt-4 block text-center bg-green-600 text-white py-2 rounded-md"
-    //         >
-    //             Descargar PDF
-    //         </a>
-    //     </div>
-    // );
 }

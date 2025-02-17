@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 export default function AyudaIA() {
     const router = useRouter();
@@ -32,7 +33,7 @@ export default function AyudaIA() {
         >
             <h1 className="text-2xl font-bold text-center mb-6">Elige cómo deseas recibir ayuda con IA</h1>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
                 {metodo.map((metodo, index) => (
                     <motion.div
                         key={index}
@@ -45,32 +46,22 @@ export default function AyudaIA() {
                         <p className="text-9xl mb-2">{metodo.icon}</p>
                         <h2 className="text-xl font-semibold mb-2 flex items-center text-slate-500">
                             <span className="mr-2">{metodo.icon}</span>
-                            {metodo.tipo}
+                            {metodo.titulo}
                         </h2>
                         <p className="text-gray-600 text-center">{metodo.descripcion}</p>
                     </motion.div>
                 ))}
             </div>
-
-            {/* <div className="space-y-4">
-                <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => router.push("/ayuda-ia/formulario")}
-                    className="w-full bg-blue-600 text-white py-3 rounded-md text-lg"
-                >
-                    Cuéntame tu situación
-                </motion.button>
-
-                <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => router.push("/ayuda-ia/subir-pdf")}
-                    className="w-full bg-green-600 text-white py-3 rounded-md text-lg"
-                >
-                    Sube tu resolución
-                </motion.button>
-            </div> */}
+            <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-6 py-3 bg-purple-500 rounded-xl text-lg font-semibold transition absolute top-[10%] left-6"
+            >
+                <Link href="/seleccion-metodo">
+                    ⬅️ Regresar
+                </Link>
+            </motion.button>
         </motion.div>
+        
     );
 }

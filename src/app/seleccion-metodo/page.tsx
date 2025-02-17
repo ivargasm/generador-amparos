@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import useAmparoStore from "../store/useAmparoStore";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 export default function SeleccionMetodo() {
     const router = useRouter();
@@ -71,25 +72,16 @@ export default function SeleccionMetodo() {
                 ))}
             </div>
 
-            {/* <div className="flex gap-6">
-                <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => handleSeleccion("manual")}
-                    className="px-6 py-3 bg-blue-500 rounded-xl text-lg font-semibold transition"
-                >
-                    ✍️ Ingreso Manual
-                </motion.button>
+            <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-6 py-3 bg-purple-500 rounded-xl text-lg font-semibold transition absolute top-[10%] left-6"
+            >
+                <Link href="/seleccion-amparo">
+                ⬅️ Regresar
+                </Link>
+            </motion.button>
 
-                <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => handleSeleccion("ia")}
-                    className="px-6 py-3 bg-green-500 rounded-xl text-lg font-semibold transition"
-                >
-                    🤖 Ayuda de IA
-                </motion.button>
-            </div> */}
         </div>
     );
 }

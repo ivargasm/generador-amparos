@@ -63,49 +63,4 @@ export default function Bienvenida() {
     </div>
   );
 
-  // return (
-  //   <div className="h-screen flex flex-col items-center justify-center bg-gradient-to-r from-blue-900 to-blue-600 text-white p-5 text-center">
-  //     <motion.h1 
-  //       className="text-4xl font-bold mb-4"
-  //       initial={{ opacity: 0, y: -20 }}
-  //       animate={{ opacity: 1, y: 0 }}
-  //       transition={{ duration: 0.5 }}
-  //     >
-  //       Generador de Amparos
-  //     </motion.h1>
-
-  //     <motion.p 
-  //       className="text-lg text-gray-200 mb-8"
-  //       initial={{ opacity: 0 }}
-  //       animate={{ opacity: 1 }}
-  //       transition={{ delay: 0.3, duration: 0.5 }}
-  //     >
-  //       Selecciona el tipo de amparo que deseas generar:
-  //     </motion.p>
-
-  //     <div className="flex flex-col md:flex-row w-full gap-6 justify-center items-center">
-  //       <motion.button
-  //         whileHover={{ scale: 1.05 }}
-  //         whileTap={{ scale: 0.95 }}
-  //         onClick={() => handleSeleccion("Amparo Directo")}
-  //         className={`px-6 py-3 rounded-xl text-lg font-semibold w-[90%] md:w-auto transition ${
-  //           seleccionado === "Amparo Directo" ? "bg-green-500" : "bg-gray-100 text-gray-900"
-  //         }`}
-  //       >
-  //         ⚖️ Amparo Directo
-  //       </motion.button>
-
-  //       <motion.button
-  //         whileHover={{ scale: 1.05 }}
-  //         whileTap={{ scale: 0.95 }}
-  //         onClick={() => handleSeleccion("Amparo Indirecto")}
-  //         className={`px-6 py-3 rounded-xl text-lg font-semibold w-[90%] md:w-auto transition ${
-  //           seleccionado === "Amparo Indirecto" ? "bg-green-500" : "bg-gray-100 text-gray-900"
-  //         }`}
-  //       >
-  //         🏛️ Amparo Indirecto
-  //       </motion.button>
-  //     </div>
-  //   </div>
-  // );
 }
