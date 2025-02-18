@@ -33,7 +33,7 @@ export default function AyudaIA() {
         >
             <h1 className="text-2xl font-bold text-center mb-6">Elige cómo deseas recibir ayuda con IA</h1>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 md:max-w-[80%] lg:max-w-[60%]">
                 {metodo.map((metodo, index) => (
                     <motion.div
                         key={index}
@@ -52,15 +52,15 @@ export default function AyudaIA() {
                     </motion.div>
                 ))}
             </div>
-            <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-6 py-3 bg-purple-500 rounded-xl text-lg font-semibold transition absolute top-[10%] left-6"
-            >
-                <Link href="/seleccion-metodo">
-                    ⬅️ Regresar
-                </Link>
-            </motion.button>
+            <Link href="/seleccion-metodo">
+                <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="px-6 py-3 bg-purple-500 rounded-xl text-lg font-semibold transition absolute top-[10%] left-6"
+                >
+                        ⬅️ Regresar
+                </motion.button>
+            </Link>
         </motion.div>
         
     );

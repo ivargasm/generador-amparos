@@ -93,15 +93,15 @@ export default function FormularioIA() {
                     </motion.button>
                 </form>
             </motion.div>
-            <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-6 py-3 bg-purple-500 rounded-xl text-lg font-semibold transition absolute top-[10%] left-6"
-            >
-                <Link href="/ayuda-ia">
-                ⬅️ Regresar
-                </Link>
-            </motion.button>
+            <Link href="/ayuda-ia">
+                <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="px-6 py-3 bg-purple-500 rounded-xl text-lg font-semibold transition absolute top-[10%] left-6"
+                >
+                    ⬅️ Regresar
+                </motion.button>
+            </Link>
         </motion.div>
     );
 }

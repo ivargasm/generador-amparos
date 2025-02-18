@@ -3,6 +3,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import Modal from "./components/modal";
 import { useRouter } from "next/navigation";
+import { ArrowDown } from "lucide-react";
 
 export default function Home() {
     const [isModalOpen, setIsModalOpen] = useState(true);
@@ -35,9 +36,20 @@ export default function Home() {
     ];
 
     return (
-        <div className="h-screen w-full overflow-y-auto snap-y snap-mandatory scroll-smooth">
+        <div className="h-screen w-full overflow-y-auto snap-y snap-mandatory scroll-smooth no-scrollbar relative">
             {/* MODAL */}
             <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+
+            {/* FLECHA ANIMADA */}
+            <motion.div 
+                className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white flex flex-col items-center"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 10 }}
+                transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut", repeatType: "mirror" }}
+            >
+                <span className="text-sm">Desliza hacia abajo</span>
+                <ArrowDown className="w-8 h-8 animate-bounce" />
+            </motion.div>
 
             {/* SECCIONES SCROLLABLES */}
             {sections.map((section, index) => (
@@ -46,7 +58,7 @@ export default function Home() {
                     className="h-screen flex flex-col items-center justify-center bg-gradient-to-r from-blue-600 to-purple-700 text-white snap-start"
                     initial={{ opacity: 0, y: 50 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 1.2, ease: "easeInOut" }} // Transición más suave
+                    transition={{ duration: 1.2, ease: "easeInOut" }}
                 >
                     <h2 className="text-4xl font-bold mb-4">{section.title}</h2>
                     <p className="text-xl max-w-2xl text-center mb-6">{section.description}</p>
@@ -63,6 +75,7 @@ export default function Home() {
                         />
                     )}
                 </motion.div>
+                
             ))}
 
             {/* SECCIÓN FINAL CON BOTÓN */}

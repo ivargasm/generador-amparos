@@ -39,7 +39,7 @@ export default function Bienvenida() {
       <p className="text-lg text-white mb-10">
         Selecciona el tipo de amparo que deseas generar:
       </p>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:max-w-[80%] lg:max-w-[60%]">
         {amparos.map((amparo, index) => (
           <motion.div
             key={index}
