@@ -27,7 +27,7 @@ const useAmparoStore = create<AmparoStore>((set, get) => ({
     tipoAmparo: null,
     previewFilename: undefined,
     datosAmparo: {},
-    // url: "http://localhost:8000",
+    //url: "http://localhost:8000",
     url: "https://generador-amparos-backend.onrender.com",
     setUrl: (url) => set({ url }),
     camposAmparo: {
