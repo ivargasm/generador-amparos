@@ -7,7 +7,7 @@ import { Download, Edit } from "lucide-react";
 
 export default function PreviewPage() {
     const router = useRouter();
-    const { previewFilename } = useAmparoStore();
+    const { previewFilename, url } = useAmparoStore();
 
     return (
         <motion.div
@@ -34,7 +34,7 @@ export default function PreviewPage() {
                 <div className="relative w-full h-96 border rounded-lg overflow-hidden shadow-md">
                     {previewFilename ? (
                         <iframe
-                            src={`http://localhost:8000/vista-previa-amparo/${previewFilename}`}
+                            src={`${url}/vista-previa-amparo/${previewFilename}`}
                             className="w-full h-full"
                             title="Vista previa del amparo"
                         ></iframe>
@@ -56,7 +56,7 @@ export default function PreviewPage() {
                     </motion.button>
 
                     <motion.a
-                        href={`http://localhost:8000/descargar-amparo/${previewFilename}`}
+                        href={`${url}/descargar-amparo/${previewFilename}`}
                         download="amparo.pdf"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}

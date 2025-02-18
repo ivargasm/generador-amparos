@@ -18,6 +18,8 @@ interface AmparoStore {
     setDatosAmparo: (datos: Record<string, unknown>) => void;
     handleGenerarAmparo: () => Promise<void>;
     handleAmparoIa: (datos: Record<string, unknown>) => Promise<void>;
+    url: string;
+    setUrl: (url: string) => void;
 }
 
 // Crear el store con los tipos definidos
@@ -25,6 +27,9 @@ const useAmparoStore = create<AmparoStore>((set, get) => ({
     tipoAmparo: null,
     previewFilename: undefined,
     datosAmparo: {},
+    // url: "http://localhost:8000",
+    url: "https://generador-amparos-backend.onrender.com",
+    setUrl: (url) => set({ url }),
     camposAmparo: {
         "Amparo Directo": [
             { name: "autoridad", label: "Autoridad", required: true, info: "Tribunal Colegiado o Juez ante el que se presenta el amparo." },
@@ -71,7 +76,7 @@ const useAmparoStore = create<AmparoStore>((set, get) => ({
         console.log(datosAmparo);
 
         try {
-            const response = await fetch("http://localhost:8000/generar-amparo/", {
+            const response = await fetch(`${get().url}/generar-amparo`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(datosAmparo),
@@ -92,7 +97,7 @@ const useAmparoStore = create<AmparoStore>((set, get) => ({
     handleAmparoIa: async (datos: Record<string, unknown>) => {
 
         try {
-            const response = await fetch("http://localhost:8000/ia/analizar-texto/", {
+            const response = await fetch(`${get().url}/ia/analizar-texto/`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(datos),
