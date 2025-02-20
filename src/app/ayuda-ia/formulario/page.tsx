@@ -40,13 +40,24 @@ export default function FormularioIA() {
 
     return (
         <motion.div
-            className="h-screen flex flex-col items-center justify-start pt-28 md:pt-0 md:justify-center bg-gradient-to-r from-purple-800 to-purple-600"
+            className="h-screen flex flex-col gap-6 items-center justify-start md:pt-0 bg-gradient-to-r from-purple-800 to-purple-600"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
         >
+            <div className="w-full flex justify-start mt-6 ml-6">
+                <Link href="/ayuda-ia">
+                    <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="px-6 py-3 bg-purple-500 rounded-xl text-lg font-semibold transition"
+                    >
+                        ⬅️ Regresar
+                    </motion.button>
+            </Link>
+            </div>
             <motion.div
-                className="w-[75%] mx-auto p-6 min-h-[70%] md:min-h-[50%] bg-white rounded-xl shadow-xl mt-10 text-slate-700"
+                className="w-[75%] mx-auto p-6 min-h-[70%] md:min-h-[50%] md:mt-10 bg-white rounded-xl shadow-xl text-slate-700"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
@@ -93,15 +104,7 @@ export default function FormularioIA() {
                     </motion.button>
                 </form>
             </motion.div>
-            <Link href="/ayuda-ia">
-                <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="px-6 py-3 bg-purple-500 rounded-xl text-lg font-semibold transition absolute top-[10%] left-6"
-                >
-                    ⬅️ Regresar
-                </motion.button>
-            </Link>
+            
         </motion.div>
     );
 }

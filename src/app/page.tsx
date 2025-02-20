@@ -42,7 +42,7 @@ export default function Home() {
 
             {/* FLECHA ANIMADA */}
             <motion.div 
-                className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white flex flex-col items-center"
+                className="absolute bottom-24 md:bottom-8 w-full flex flex-col items-center justify-center text-white"
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 10 }}
                 transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut", repeatType: "mirror" }}
@@ -55,12 +55,12 @@ export default function Home() {
             {sections.map((section, index) => (
                 <motion.div
                     key={index}
-                    className="h-screen flex flex-col items-center justify-center bg-gradient-to-r from-blue-600 to-purple-700 text-white snap-start"
+                    className="h-svh p-8 flex flex-col items-center justify-center bg-gradient-to-r from-blue-600 to-purple-700 text-white snap-start"
                     initial={{ opacity: 0, y: 50 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1.2, ease: "easeInOut" }}
                 >
-                    <h2 className="text-4xl font-bold mb-4">{section.title}</h2>
+                    <h2 className="text-4xl font-bold mb-4 text-center">{section.title}</h2>
                     <p className="text-xl max-w-2xl text-center mb-6">{section.description}</p>
 
                     {/* IMAGEN */}
