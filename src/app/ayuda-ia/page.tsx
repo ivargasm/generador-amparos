@@ -1,11 +1,12 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import TarjetaOpcion from "../components/tarjetaOpcion";
 
 export default function AyudaIA() {
-    const router = useRouter();
+    // const router = useRouter();
 
     const metodo = [
         {
@@ -46,22 +47,14 @@ export default function AyudaIA() {
             <h1 className="text-2xl font-bold text-center mb-6">Elige cómo deseas recibir ayuda con IA</h1>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 md:max-w-[80%] lg:max-w-[60%]">
-                {metodo.map((metodo, index) => (
-                    <motion.div
-                        key={index}
-                        className={`bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center cursor-pointer hover:shadow-2xl hover:scale-105 hover:bg-slate-100 transition-all duration-400 `}
-                        initial={{ opacity: 0, y: 50 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: index * 0.2 }}
-                        onClick={() => router.push(`/ayuda-ia/${metodo.tipo}`)}
-                    >
-                        <p className="text-9xl mb-2">{metodo.icon}</p>
-                        <h2 className="text-xl font-semibold mb-2 flex items-center text-slate-500">
-                            <span className="mr-2">{metodo.icon}</span>
-                            {metodo.titulo}
-                        </h2>
-                        <p className="text-gray-600 text-center">{metodo.descripcion}</p>
-                    </motion.div>
+                {metodo.map((item, index) => (
+                    <TarjetaOpcion 
+                    key={index}
+                    titulo={item.titulo}
+                    descripcion={item.descripcion}
+                    icon={item.icon}
+                    ruta={`/ayuda-ia/${item.tipo}`} 
+                    />
                 ))}
             </div>
             
