@@ -9,17 +9,31 @@ interface CampoAmparo {
     info?: string;
 }
 
+// Definir los tipos para el store
+interface User {
+    id: number;
+    username: string;
+    email: string;
+    role: "user" | "admin";
+}
+
 interface AmparoStore {
     tipoAmparo: string | null;
     datosAmparo: Record<string, unknown>;
     camposAmparo: Record<string, CampoAmparo[]>;
     previewFilename?: string;
+    url: string;
+    user: User | null;
+    token: string | null;
     setTipoAmparo: (tipo: string) => void;
     setDatosAmparo: (datos: Record<string, unknown>) => void;
     handleGenerarAmparo: () => Promise<void>;
     handleAmparoIa: (datos: Record<string, unknown>) => Promise<void>;
-    url: string;
     setUrl: (url: string) => void;
+    registerUser: (email: string, password: string, username: string) => Promise<boolean>;
+    loginUser: (email: string, password: string) => Promise<boolean>;
+    logoutUser: () => void;
+    fetchCurrentUser: () => Promise<void>;
 }
 
 // Crear el store con los tipos definidos
@@ -27,8 +41,10 @@ const useAmparoStore = create<AmparoStore>((set, get) => ({
     tipoAmparo: null,
     previewFilename: undefined,
     datosAmparo: {},
-    // url: "http://localhost:8000",
-    url: "https://generador-amparos-backend.onrender.com",
+    url: "http://localhost:8000",
+    // url: "https://generador-amparos-backend.onrender.com",
+    user: null,
+    token: null,
     setUrl: (url) => set({ url }),
     camposAmparo: {
         "Amparo Directo": [
@@ -128,6 +144,89 @@ const useAmparoStore = create<AmparoStore>((set, get) => ({
             }
         } catch (error) {
             console.error("Error al generar el amparo", error);
+        }
+    },
+    // 📌 Registrar usuario
+    registerUser: async (email, password, username) => {
+        try {
+            const response = await fetch(`${get().url}/auth/register`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, email, password }),
+            });
+
+            if (response.ok) {
+                console.log("Registro exitoso");
+                return true;
+            } else {
+                console.error("Error en el registro");
+                return false;
+            }
+        } catch (error) {
+            console.error("Error al registrar", error);
+            return false;
+        }
+    },
+
+    // 📌 Iniciar sesión
+    loginUser: async (email, password) => {
+        try {
+            const response = await fetch(`${get().url}/auth/login`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password }),
+                credentials: "include", // 🔥 Importante para enviar cookies
+            });
+
+            if (response.ok) {
+                await get().fetchCurrentUser(); // 🔥 Verifica la sesión después del login
+                return true;
+            } else {
+                console.error("Error al iniciar sesión");
+                return false;
+            }
+        } catch (error) {
+            console.error("Error en la autenticación", error);
+            return false;
+        }
+    },
+
+    // 📌 Obtener usuario actual
+    fetchCurrentUser: async () => {
+        // const token = document.cookie.split("; ").find(row => row.startsWith("token="))?.split("=")[1];
+        // console.log("Token actual:", token);
+        // if (!token) return;
+
+        try {
+            const response = await fetch(`${get().url}/auth/me`, {
+                method: "GET",
+                credentials: "include", // 🔥 Importante para enviar cookies
+            });
+
+            if (response.ok) {
+                const user = await response.json();
+                set({ user });
+            } else {
+                console.error("No se pudo obtener el usuario");
+                set({ user: null });
+            }
+        } catch (error) {
+            console.error("Error al obtener usuario", error);
+            set({ user: null });
+        }
+    },
+
+    // 📌 Cerrar sesión
+    logoutUser: async() => {
+        try {
+            await fetch(`${get().url}/auth/logout`, {
+                method: "POST",
+                credentials: "include",
+            });
+    
+            set({ user: null });
+        } catch (error) {
+            console.error("Error al cerrar sesión", error);
         }
     },
 }));
