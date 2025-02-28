@@ -1,12 +1,13 @@
 "use client";
 
 import { useState } from "react";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Menu, X, Home, FilePlus, Folder } from "lucide-react";
+import { Menu, X, Home, FilePlus, Folder, LogOut, LogIn } from "lucide-react";
 import Link from "next/link";
+import useAmparoStore from "../store/useAmparoStore";
 
 export default function Navbar() {
     const [menuOpen, setMenuOpen] = useState(false);
+    const { isAuthenticated, logoutUser } = useAmparoStore();
 
     return (
         <nav className="fixed top-0 left-0 w-full bg-white shadow-md z-50">
@@ -35,11 +36,28 @@ export default function Navbar() {
                             <FilePlus size={20} /> Nuevo Amparo
                         </Link>
                     </li>
-                    {/* <li>
-                        <Link href="/mis-amparos" className="flex items-center gap-2 hover:text-blue-600">
-                            <Folder size={20} /> Mis Amparos
-                        </Link>
-                    </li> */}
+                    {/* si is Autenticates is Treu mostrar menu dashboard */}
+                    {isAuthenticated && (
+                        <>
+                            <li>
+                                <Link href="/dashboard" className="flex items-center gap-2 hover:text-blue-600">
+                                    <Folder size={20} /> Dashboard
+                                </Link>
+                            </li>
+                            <li>
+                                <Link onClick={() => { logoutUser(); } } className="flex items-center gap-2 hover:text-blue-600" href={"/"}>
+                                    <LogOut size={20} /> Logout
+                                </Link>
+                            </li>
+                        </>
+                    )}
+                    {!isAuthenticated && (
+                        <li>
+                            <Link href="/login" className="flex items-center gap-2 hover:text-blue-600">
+                                <LogIn size={20} /> Login
+                            </Link>
+                        </li>
+                    )}
                 </ul>
             </div>
 
@@ -57,11 +75,27 @@ export default function Navbar() {
                                 <FilePlus size={20} /> Nuevo Amparo
                             </Link>
                         </li>
-                        {/* <li>
-                            <Link href="/mis-amparos" className="flex items-center gap-2 text-slate-700 hover:text-blue-600" onClick={() => setMenuOpen(false)}>
-                                <Folder size={20} /> Mis Amparos
-                            </Link>
-                        </li> */}
+                        {isAuthenticated && (
+                            <>
+                                <li>
+                                    <Link href="/dashboard" className="flex items-center gap-2 text-slate-700 hover:text-blue-600" onClick={() => setMenuOpen(false)}>
+                                        <Folder size={20} /> Dashboard
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link onClick={() => { logoutUser(); }} className="flex items-center gap-2 text-slate-700 hover:text-blue-600" href={"/"}>
+                                        <LogOut size={20} /> Logout
+                                    </Link>
+                                </li>
+                            </>
+                        )}
+                        {!isAuthenticated && (
+                            <li>
+                                <Link href="/login" className="flex items-center gap-2 text-slate-700 hover:text-blue-600" onClick={() => setMenuOpen(false)}>
+                                    <LogIn size={20} /> Login
+                                </Link>
+                            </li>
+                        )}
                     </ul>
                 </div>
             )}

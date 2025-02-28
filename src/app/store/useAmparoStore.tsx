@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { create } from "zustand";
 
 // Definir los tipos para el store
@@ -17,6 +18,18 @@ interface User {
     role: "user" | "admin";
 }
 
+interface UserAmparos {
+    id: number;
+    user_id: number;
+    fecha_creacion: string;
+    fecha_ultima_modificacion: string;
+    tipo_amparo: string;
+    modificado_en_24h: boolean;
+    nombre_amparo: string;
+    nombre_corto: string;
+    datos_amparo: Record<string, unknown>;
+}
+
 interface AmparoStore {
     tipoAmparo: string | null;
     datosAmparo: Record<string, unknown>;
@@ -34,6 +47,14 @@ interface AmparoStore {
     loginUser: (email: string, password: string) => Promise<boolean>;
     logoutUser: () => void;
     fetchCurrentUser: () => Promise<void>;
+    amparosGenerados: number | null;
+    verificarLimiteAmparos: () => Promise<void>;
+    amparoId: number | null;  // 🔥 Nuevo campo para guardar el ID del amparo
+    setAmparoId: (id: number) => void;
+    isAuthenticated: boolean;
+    verificarSesion: () => Promise<void>;
+    user_amparos: UserAmparos[];  // ⬅️ Cambiado a un array normal
+    set_user_amparos: (amparos: UserAmparos[]) => void;
 }
 
 // Crear el store con los tipos definidos
@@ -45,6 +66,11 @@ const useAmparoStore = create<AmparoStore>((set, get) => ({
     // url: "https://generador-amparos-backend.onrender.com",
     user: null,
     token: null,
+    amparosGenerados: null,
+    amparoId: null,
+    isAuthenticated: false,
+    user_amparos: [],  // Inicializamos como un array vacío
+    set_user_amparos: (amparos) => set({ user_amparos: amparos }),
     setUrl: (url) => set({ url }),
     camposAmparo: {
         "Amparo Directo": [
@@ -96,13 +122,16 @@ const useAmparoStore = create<AmparoStore>((set, get) => ({
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(datosAmparo),
+                credentials: "include",
             });
 
             if (response.ok) {
                 console.log("Amparo generado correctamente");
                 const data = await response.json();
-                set({ previewFilename: data.filename }); // Guardamos el nombre del archivo
+                set({ previewFilename: data.filename, amparoId: data.amparo_id }); // Guardamos el nombre del archivo
                 console.log("Nombre del archivo:", data.filename);
+            } else if (response.status === 403) {
+                alert("Has alcanzado el límite de amparos gratuitos. Compra una suscripción o paga por amparo.")
             } else {
                 console.error("Error en la respuesta del servidor");
             }
@@ -117,6 +146,7 @@ const useAmparoStore = create<AmparoStore>((set, get) => ({
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(datos),
+                credentials: "include",
             });
 
             if (response.ok) {
@@ -205,14 +235,14 @@ const useAmparoStore = create<AmparoStore>((set, get) => ({
 
             if (response.ok) {
                 const user = await response.json();
-                set({ user });
+                set({ user, isAuthenticated: true });
             } else {
                 console.error("No se pudo obtener el usuario");
-                set({ user: null });
+                set({ user: null, isAuthenticated: false, token: null, amparoId: null });
             }
         } catch (error) {
             console.error("Error al obtener usuario", error);
-            set({ user: null });
+            set({ user: null, isAuthenticated: false });
         }
     },
 
@@ -224,11 +254,57 @@ const useAmparoStore = create<AmparoStore>((set, get) => ({
                 credentials: "include",
             });
     
-            set({ user: null });
+            set({ user: null, isAuthenticated: false, token: null, amparoId: null });
+            redirect("/login");
         } catch (error) {
             console.error("Error al cerrar sesión", error);
         }
     },
+
+    setAmparoId: (id) => set({ amparoId: id }),
+
+    // 📌 Verifica si el usuario ha alcanzado su límite de amparos gratuitos
+    verificarLimiteAmparos: async () => {
+        try {
+            const response = await fetch(`${get().url}/amparos/mis-amparos`, {
+                method: "GET",
+                credentials: "include",
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                set({ amparosGenerados: data.total_amparos, user_amparos: data.amparos });
+            } else {
+                console.error("Error al obtener la cantidad de amparos generados");
+            }
+        } catch (error) {
+            console.error("Error en la verificación de amparos", error);
+        }
+    },
+
+    // 📌 Verifica si el usuario tiene sesión activa
+    verificarSesion: async () => {
+        try {
+            const response = await fetch(`${get().url}/auth/me`, {
+                method: "GET",
+                credentials: "include",
+            });
+
+            if (response.ok) {
+                const user = await response.json();
+                set({ user, isAuthenticated: true });
+            } else {
+                console.warn("Sesión expirada o no iniciada");
+                set({ user: null, isAuthenticated: false, token: null, amparoId: null });
+                redirect("/login"); // 🔥 Redirigir al login si no hay sesión
+            }
+        } catch (error) {
+            console.error("Error al verificar sesión", error);
+            set({ user: null, isAuthenticated: false });
+            redirect("/login"); // 🔥 Redirigir al login si hay error
+        }
+    },
+
 }));
 
 export default useAmparoStore;
