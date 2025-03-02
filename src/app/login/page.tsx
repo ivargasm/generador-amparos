@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import useAmparoStore from "../store/useAmparoStore";
 import { Button } from "@/components/ui/button";
@@ -8,11 +8,18 @@ import { Input } from "@/components/ui/input";
 
 export default function LoginPage() {
     const router = useRouter();
-    const { loginUser } = useAmparoStore();
+    const { loginUser, user  } = useAmparoStore();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+
+    // 🔹 Si el usuario ya está logueado, redirigir automáticamente a /dashboard
+    useEffect(() => {
+        if (user) {
+            router.push("/dashboard");
+        }
+    }, [router, user]);
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();

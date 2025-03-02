@@ -8,7 +8,7 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 
 export default function Dashboard() {
-    const { user, fetchCurrentUser, user_amparos, verificarLimiteAmparos, url, setAmparoId, setDatosAmparo } = useAmparoStore();
+    const { user, fetchCurrentUser, user_amparos, verificarLimiteAmparos, url, setAmparoId, setDatosAmparo, comprarAmparo } = useAmparoStore();
     const router = useRouter();
 
     useEffect(() => {
@@ -31,6 +31,11 @@ export default function Dashboard() {
                         {/* <p className="text-gray-500 mb-4">Tu rol: {user.role}</p> */}
 
                         <h2 className="text-2xl font-semibold mb-4">Tus Amparos</h2>
+
+                        <Button onClick={comprarAmparo}>
+                            🛒 Comprar Amparo Extra
+                        </Button>
+
 
                         {user_amparos.length > 0 ? (  // ✅ Validamos que `user_amparos` no esté vacío
                             <Table className="w-full max-w-4xl bg-white shadow-md rounded-lg overflow-hidden m-auto">

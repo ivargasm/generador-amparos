@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 export default function Bienvenida() {
   const router = useRouter();
-  const { setTipoAmparo, verificarLimiteAmparos, amparosGenerados } = useAmparoStore();
+  const { setTipoAmparo, verificarLimiteAmparos, amparosDisponibles } = useAmparoStore();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -18,8 +18,9 @@ export default function Bienvenida() {
     fetchData();
   }, [verificarLimiteAmparos]);
 
+
   const handleSeleccion = (tipo: string) => {
-    if (amparosGenerados !== null && amparosGenerados >= 2) {
+    if (amparosDisponibles === null || amparosDisponibles <= 0) {
       alert("Has alcanzado el límite de amparos gratuitos. Adquiere una suscripción o paga por amparo.");
       return;
     }
@@ -57,7 +58,7 @@ export default function Bienvenida() {
           amparos.map((amparo, index) => (
             <motion.div
               key={index}
-              className={`bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center cursor-pointer hover:shadow-2xl hover:scale-105 hover:bg-slate-100 transition-all duration-400 ${amparosGenerados !== null && amparosGenerados >= 2
+              className={`bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center cursor-pointer hover:shadow-2xl hover:scale-105 hover:bg-slate-100 transition-all duration-400 ${amparosDisponibles !== null && amparosDisponibles <= 0
                   ? "opacity-50 cursor-not-allowed"
                   : ""
                 }`}

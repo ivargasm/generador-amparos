@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { create } from "zustand";
 
+
 // Definir los tipos para el store
 interface CampoAmparo {
     name: string;
@@ -55,6 +56,8 @@ interface AmparoStore {
     verificarSesion: () => Promise<void>;
     user_amparos: UserAmparos[];  // ⬅️ Cambiado a un array normal
     set_user_amparos: (amparos: UserAmparos[]) => void;
+    amparosDisponibles: number | null;
+    comprarAmparo: () => Promise<void>;
 }
 
 // Crear el store con los tipos definidos
@@ -70,6 +73,7 @@ const useAmparoStore = create<AmparoStore>((set, get) => ({
     amparoId: null,
     isAuthenticated: false,
     user_amparos: [],  // Inicializamos como un array vacío
+    amparosDisponibles: null,
     set_user_amparos: (amparos) => set({ user_amparos: amparos }),
     setUrl: (url) => set({ url }),
     camposAmparo: {
@@ -265,6 +269,14 @@ const useAmparoStore = create<AmparoStore>((set, get) => ({
 
     // 📌 Verifica si el usuario ha alcanzado su límite de amparos gratuitos
     verificarLimiteAmparos: async () => {
+        // verificar sesion activa
+
+        await get().verificarSesion();
+        if (!get().isAuthenticated) {
+            return redirect("/login");
+        }
+
+
         try {
             const response = await fetch(`${get().url}/amparos/mis-amparos`, {
                 method: "GET",
@@ -273,7 +285,7 @@ const useAmparoStore = create<AmparoStore>((set, get) => ({
 
             if (response.ok) {
                 const data = await response.json();
-                set({ amparosGenerados: data.total_amparos, user_amparos: data.amparos });
+                set({ amparosGenerados: data.total_amparos, user_amparos: data.amparos, amparosDisponibles: data.amparos_disponibles });
             } else {
                 console.error("Error al obtener la cantidad de amparos generados");
             }
@@ -302,6 +314,26 @@ const useAmparoStore = create<AmparoStore>((set, get) => ({
             console.error("Error al verificar sesión", error);
             set({ user: null, isAuthenticated: false });
             redirect("/login"); // 🔥 Redirigir al login si hay error
+        }
+    },
+
+    // 📌 Nueva función para pagar por un amparo
+    comprarAmparo: async () => {
+        try {
+            const response = await fetch(`${get().url}/payments/create-payment-link`, {
+                method: "POST",
+                credentials: "include",  // Enviar cookies
+            });
+
+            if (response.ok) {
+                const data = await response.json()
+                console.log(data)
+                window.location.href = data.url;  // Redirigir a Stripe
+            } else {
+                console.error("Error al generar el enlace de pago");
+            }
+        } catch (error) {
+            console.error("Error en la compra del amparo", error);
         }
     },
 
