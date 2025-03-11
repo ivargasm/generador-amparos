@@ -109,7 +109,7 @@ export default function FormularioManual() {
                                             </Tooltip>
                                         )}
                                     </div>
-                                    {["acto_reclamado", "fundamento_constitucional", "conceptos_violacion", "acto_omision", "hechos_antecedentes"].includes(campo.name) ? (
+                                    {["acto_reclamado", "fundamento_constitucional", "conceptos_violacion", "acto_omision", "hechos_antecedentes","suspencion_acto","pruebas"].includes(campo.name) ? (
                                         <textarea name={campo.name} value={formData[campo.name] || ""} required={campo.required} onChange={handleChange}
                                             className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 text-gray-700 h-24 resize-none" />
                                     ) : (
