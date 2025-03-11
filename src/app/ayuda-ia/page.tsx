@@ -16,13 +16,13 @@ export default function AyudaIA() {
                 "Ingresa los datos de manera manual, debes de tener a la mano la información necesaria.",
             icon: "✍️",
         },
-        {
-            titulo: "Subir PDF",
-            tipo: "subir-pdf",
-            descripcion:
-                "Tendras ayuda de una IA para generar el amparo, solo necesitas describir tu situación.",
-            icon: "🗂️",
-        },
+        // {
+        //     titulo: "Subir PDF",
+        //     tipo: "subir-pdf",
+        //     descripcion:
+        //         "Tendras ayuda de una IA para generar el amparo, solo necesitas describir tu situación.",
+        //     icon: "🗂️",
+        // },
     ];
 
     return (
