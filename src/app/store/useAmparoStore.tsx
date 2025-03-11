@@ -198,10 +198,12 @@ const useAmparoStore = create<AmparoStore>((set, get) => ({
             if (response.ok) {
                 console.log("Registro exitoso");
                 return true;
+            } else if (response.status === 400) {
+                console.log("El usuario ya existe")
             } else {
                 console.error("Error en el registro");
-                return false;
             }
+            return false;
         } catch (error) {
             console.error("Error al registrar", error);
             return false;
